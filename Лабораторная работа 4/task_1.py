@@ -1,0 +1,154 @@
+class Metal:
+    """
+    Базовый класс для металлов.
+    """
+
+    def __init__(self, name: str, density: float, melting_point: float) -> None:
+        """
+        Инициализация металла.
+
+        :param name: Название металла.
+        :param density: Плотность металла.
+        :param melting_point: Температура плавления металла.
+        """
+        self.name = name  # Публичный атрибут, доступный для чтения
+        self.__density = density  # Инкапсуляция плотности для ограниченного доступа извне
+        self.__melting_point = melting_point  # Инкапсуляция температуры плавления
+
+    @property
+    def density(self):
+        """Возвращает плотность металла."""
+        return self.__density
+
+    @property
+    def melting_point(self):
+        """Возвращает температуру плавления металла."""
+        return self.__melting_point
+
+    def __str__(self) -> str:
+        """
+        Возвращает строковое представление металла.
+
+        :return: Строка с информацией о металле.
+        """
+        return f"{self.name}: Density = {self.__density}, Melting Point = {self.__melting_point}."
+
+    def __repr__(self) -> str:
+        """
+        Возвращает официальное строковое представление металла.
+
+        :return: Официальная строка.
+        """
+        return f"Metal(name='{self.name}', density={self.__density}, melting_point={self.__melting_point})"
+
+    def is_malleable(self) -> bool:
+        """
+        Проверяет, является ли металл ковким.
+
+        :return: True, если металл ковкий, иначе False.
+        """
+        # Для упрощения предположим, что все металлы в этом классе ковкие
+        return True
+
+
+class Steel(Metal):
+    """
+                Класс стали, наследующий признаки металлов.
+                """
+
+    def __init__(self, name: str, density: float, melting_point: float, carbon_content: float) -> None:
+        """
+        Инициализация стали.
+
+        :param name: Название стали.
+        :param density: Плотность стали.
+        :param melting_point: Температура плавления стали.
+        :param carbon_content: Содержание углерода в стали.
+        """
+        super().__init__(name, density, melting_point)
+        self.carbon_content = carbon_content  # Публичный атрибут содержания углерода
+
+    def __str__(self) -> str:
+        """
+        Возвращает строковое представление стали.
+
+        :return: Строка с информацией о стали.
+        """
+        return f"{super().__str__()} Carbon Content = {self.carbon_content}."
+
+    def __repr__(self) -> str:
+        """
+        Возвращает официальное строковое представление стали.
+
+        :return: Официальная строка.
+        """
+        return f"Steel(name='{self.name}', density={self._Metal__density}, melting_point={self._Metal__melting_point}, carbon_content={self.carbon_content})"
+
+    def is_malleable(self) -> bool:
+        """
+        Проверяет, является ли сталь ковкой.
+
+        Сталь может быть как ковкой, так и хрупкой в зависимости от содержания углерода.
+        Если содержание углерода меньше 1%, сталь считается ковкой.
+
+        :return: True, если сталь ковкая, иначе False.
+        """
+        return self.carbon_content < 1.0
+
+
+class CastIron(Metal):
+    """
+                Класс чугуна, наследующий признаки металлов.
+                """
+
+    def __init__(self, name: str, density: float, melting_point: float, silicon_content: float) -> None:
+        """
+        Инициализация чугуна.
+
+        :param name: Название чугуна.
+        :param density: Плотность чугуна.
+        :param melting_point: Температура плавления чугуна.
+        :param silicon_content: Содержание кремния в чугуне.
+        """
+        super().__init__(name, density, melting_point)
+        self.__silicon_content = silicon_content  # Инкапсуляция содержания кремния
+
+    def __str__(self) -> str:
+        """
+        Возвращает строковое представление чугуна.
+
+        :return: Строка с информацией о чугуне.
+        """
+        return f"{super().__str__()} Silicon Content = {self.__silicon_content}."
+
+    def __repr__(self) -> str:
+        """
+        Возвращает официальное строковое представление чугуна.
+
+        :return: Официальная строка.
+        """
+        return f"CastIron(name='{self.name}', density={self._Metal__density}, melting_point={self._Metal__melting_point}, silicon_content={self.__silicon_content})"
+
+    def is_malleable(self) -> bool:
+        """
+        Проверяет, является ли чугун ковким.
+
+        Чугун обычно считается хрупким и нековким материалом.
+
+        :return: False, так как чугун не является ковким.
+        """
+        return False
+
+copper = Metal(name="Copper", density=8.96, melting_point=1085) # Создание объекта класса Metal
+print(copper)  # Выводит строковое представление меди
+print(repr(copper))  # Выводит официальное строковое представление меди
+print(f"Медь является ковким металлом? {copper.is_malleable()}")  # Проверка ковкости меди
+
+high_carbon_steel = Steel(name="High Carbon Steel", density=7.85, melting_point=1370, carbon_content=1.5) # Создание объекта класса Steel с высоким содержанием углерода
+print(high_carbon_steel)  # Выводит строковое представление высокоуглеродной стали
+print(f"Высокоуглеродная сталь является ковким металлом? {high_carbon_steel.is_malleable()}")  # Проверка ковкости высокоуглеродной стали
+
+cast_iron = CastIron(name="Cast Iron", density=7.8, melting_point=1200, silicon_content=2.0) # Создание объекта класса CastIron
+print(cast_iron)  # Выводит строковое представление чугуна
+print(repr(cast_iron))  # Выводит официальное строковое представление чугуна
+print(f"Чугун является ковким металлом? {cast_iron.is_malleable()}")  # Проверка ковкости чугуна
